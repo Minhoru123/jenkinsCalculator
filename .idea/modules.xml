@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JenkinsCalculator/JenkinsCalculator.iml" filepath="$PROJECT_DIR$/JenkinsCalculator/JenkinsCalculator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/JenkinsCalculator.iml" filepath="$PROJECT_DIR$/.idea/JenkinsCalculator.iml" />
     </modules>
   </component>
 </project>

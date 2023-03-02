@@ -6,6 +6,7 @@ class Calculator {
 
     }
 
+    //add, subtract, divide and multiply
     int add(int a , int b){
         return a + b;
     }
