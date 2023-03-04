@@ -5,47 +5,35 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the calculator app!");
-        System.out.println("Enter the operation command: ");
-        String operation = scanner.nextLine();
+        System.out.println("Enter the input in the format 'Input: operation operand1 operand2':");
+        String input = scanner.nextLine();
 
+        String[] parts = input.split(" ");
+        String operation = parts[1];
+        int operand1 = Integer.parseInt(parts[2]);
+        int operand2 = Integer.parseInt(parts[3]);
+
+        int result = 0;
         if (operation.equals("add")) {
-            System.out.println("Enter the two numbers you want to add, separated by a space:");
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            int result = add(a, b);
-            System.out.println(result);
+            result = add(operand1, operand2);
         } else if (operation.equals("subtract")) {
-            System.out.println("Enter the two numbers you want to subtract, separated by a space:");
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            int result = subtract(a, b);
-            System.out.println(result);
+            result = subtract(operand1, operand2);
         } else if (operation.equals("multiply")) {
-            System.out.println("Enter the two numbers you want to multiply, separated by a space:");
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            int result = multiply(a, b);
-            System.out.println(result);
+            result = multiply(operand1, operand2);
         } else if (operation.equals("divide")) {
-            System.out.println("Enter the two numbers you want to divide, separated by a space:");
-            int a = scanner.nextInt();
-            int b = scanner.nextInt();
-            double result = divide(a, b);
-            System.out.println(result);
+            result = divide(operand1, operand2);
         } else if (operation.equals("fibonacciNumberFinder")) {
-            System.out.println("Enter the index of the fibonacci number you want to find:");
-            int n = scanner.nextInt();
-            int result = fibonacciNumberFinder(n);
-            System.out.println(result);
+            result = fibonacciNumberFinder(operand1);
         } else if (operation.equals("intToBinaryNumber")) {
-            System.out.println("Enter the integer you want to convert to binary:");
-            int n = scanner.nextInt();
-            String result = intToBinaryNumber(n);
-            System.out.println(result);
+            String binary = intToBinaryNumber(operand1);
+            System.out.println("Result: " + binary);
+            return;
         } else {
             System.out.println("Invalid operation!");
+            return;
         }
+
+        System.out.println("Result: " + result);
 
         scanner.close();
     }
@@ -62,8 +50,8 @@ public class Main {
         return a * b;
     }
 
-    public static double divide(int a, int b) {
-        return (double) a / b;
+    public static int divide(int a, int b) {
+        return a / b;
     }
 
     public static int fibonacciNumberFinder(int n) {
@@ -81,20 +69,6 @@ public class Main {
     }
 
     public static String intToBinaryNumber(int n) {
-        if (n == 0) {
-            return "0";
-        }
-
-        StringBuilder binary = new StringBuilder();
-        while (n > 0) {
-            if (n % 2 == 1) {
-                binary.append("1");
-            } else {
-                binary.append("0");
-            }
-            n /= 2;
-        }
-
-        return binary.reverse().toString();
+        return Integer.toBinaryString(n);
     }
 }
