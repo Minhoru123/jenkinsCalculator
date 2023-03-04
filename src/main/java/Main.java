@@ -5,36 +5,47 @@ public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the input in the format 'Input: operation operand1 operand2':");
-        String input = scanner.nextLine();
+        System.out.println("Welcome to the calculator!");
 
-        String[] parts = input.split(" ");
-        String operation = parts[1];
-        int operand1 = Integer.parseInt(parts[2]);
-        int operand2 = Integer.parseInt(parts[3]);
-
-        int result = 0;
-        if (operation.equals("add")) {
-            result = add(operand1, operand2);
-        } else if (operation.equals("subtract")) {
-            result = subtract(operand1, operand2);
-        } else if (operation.equals("multiply")) {
-            result = multiply(operand1, operand2);
-        } else if (operation.equals("divide")) {
-            result = divide(operand1, operand2);
-        } else if (operation.equals("fibonacciNumberFinder")) {
-            result = fibonacciNumberFinder(operand1);
-        } else if (operation.equals("intToBinaryNumber")) {
-            String binary = intToBinaryNumber(operand1);
-            System.out.println("Result: " + binary);
-            return;
-        } else {
-            System.out.println("Invalid operation!");
-            return;
+        while (true) {
+            System.out.print("Enter a command(exit to quit): ");
+            String input = scanner.nextLine();
+            if (input.equals("exit")) {
+                break;
+            }
+            String[] parts = input.split(" ");
+            String operation = parts[0];
+            int operand1 = 0;
+            int operand2 = 0;
+            if (parts.length > 1) {
+                operand1 = Integer.parseInt(parts[1]);
+            }
+            if (parts.length > 2) {
+                operand2 = Integer.parseInt(parts[2]);
+            }
+            int result = 0;
+            if (operation.equals("add")) {
+                result = add(operand1, operand2);
+            } else if (operation.equals("subtract")) {
+                result = subtract(operand1, operand2);
+            } else if (operation.equals("multiply")) {
+                result = multiply(operand1, operand2);
+            } else if (operation.equals("divide")) {
+                result = divide(operand1, operand2);
+            } else if (operation.equals("fibonacci")) {
+                result = fibonacciNumberFinder(operand1);
+            } else if (operation.equals("binary")) {
+                String binary = intToBinaryNumber(operand1);
+                System.out.println("Result: " + binary);
+                continue;
+            } else {
+                System.out.println("Invalid operation!");
+                continue;
+            }
+            System.out.println("Result: " + result);
         }
 
-        System.out.println("Result: " + result);
-
+        System.out.println("Thanks for using the calculator!");
         scanner.close();
     }
 
