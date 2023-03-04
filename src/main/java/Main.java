@@ -6,7 +6,7 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the calculator app!");
-        System.out.println("Enter the operation you want to perform: add, subtract, multiply, divide, fibonacciNumberFinder, intToBinaryNumber");
+        System.out.println("Enter the operation command: ");
         String operation = scanner.nextLine();
 
         if (operation.equals("add")) {
