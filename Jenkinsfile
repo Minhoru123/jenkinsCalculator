@@ -1,80 +1,89 @@
 pipeline {
-    agent any
-    tools {
-        maven 'apache maven 3.6.3'
-        jdk 'JDK 11'
-    }
-    environment {
-            registry = "minho199813/calcapp"
-            registryCredential = 'dockerhub'
-            dockerImage=''
-    }
-    stages {
-        stage ('Clean') {
-            steps {
-                sh 'mvn clean'
-            }
-        }
+  environment {
+    registry = "minho199813/calcapp"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
 
-        stage ('Build') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
+  agent any
 
-        stage ('Short Tests') {
-            steps {
-                sh 'mvn -Dtest=CalculatorTest test'
-            }
-        }
+  tools {
+     maven 'apache maven 3.6.3'
+     jdk 'JDK 8'
+  }
 
-        stage ('Long Tests') {
-            steps {
-                sh 'mvn -Dtest=CalculatorTestThorough test'
-            }
-            post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml'
-                }
-            }
-        }
+  stages {
 
-        stage ('Package') {
-            steps {
-                sh 'mvn package'
-                archiveArtifacts artifacts: 'src/**/*.java'
-                archiveArtifacts artifacts: 'target/*.jar'
-            }
-        }
-        stage ('Building image') {
-            steps {
-                script {
-                   dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                        }
-            }
-        }
-        stage ('Deploy Image') {
-                    steps {
-                        script {
-                            docker.withRegistry('', registryCredential) {
-                                dockerImage.push()
-                            }
-                        }
-                    }
-        }
-        stage ('Remove unused docker image') {
-                    steps {
-                        sh "docker rmi $registry:$BUILD_NUMBER"
-                    }
-        }
+     stage ('Clean') {
+          steps {
+              sh 'mvn clean'
+          }
+      }
 
-    }
-    post {
-    	failure{
-           	  mail to: 'minhorucotacheleon@gmail.com',
-    	  subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-    	  body: "Something is wrong with ${env.BUILD_URL}"
-    	}
-    }
+      stage ('Build') {
+          steps {
+              sh 'mvn compile'
+          }
+      }
 
+      stage ('Short Tests') {
+          steps {
+              sh 'mvn -Dtest=CalculatorTest test'
+          }
+      }
+
+      stage ('Long Tests') {
+          steps {
+              sh 'mvn -Dtest=CalculatorTestThorough test'
+          }
+          post {
+              success {
+                  junit 'target/surefire-reports/**/*.xml'
+              }
+          }
+      }
+
+      stage ('Package') {
+          steps {
+              sh 'mvn package'
+              archiveArtifacts artifacts: 'src/**/*.java'
+              archiveArtifacts artifacts: 'target/*.jar'
+          }
+      }
+
+      stage('Building image') {
+        steps{
+          script {
+            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          }
+        }
+      }
+
+      stage('Deploy Image') {
+        steps{
+          script {
+            docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+            }
+          }
+        }
+      }
+
+      stage('Remove Unused docker image') {
+          steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+          }
+        }
+      }
+
+      post {
+          failure {
+              mail to: 'minhorucotacheleon@gmail.com',
+              subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+              body: "Something is wrong with ${env.BUILD_URL}"
+          }
+      }
 }
+
+
+
